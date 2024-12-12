@@ -16,6 +16,7 @@ class Report extends Model
         'village',
         'type',
         'description',
+        'image',    
     ];
 
     public function responses(): HasOne

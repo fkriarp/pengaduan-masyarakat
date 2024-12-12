@@ -28,8 +28,40 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'province' => 'required',
+            'regency' => 'required',
+            'subdistrict' => 'required',
+            'village' => 'required',
+            'type' => 'required',
+            'description' => 'required|min:128',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+    
+        try {
+            // Generate a unique file name using UUID
+            $fileName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+    
+            // Store the image in the 'images' folder under public storage
+            $imagePath = $request->file('image')->storeAs('images', $fileName, 'public');
+    
+            // Create a new report
+            Report::create([
+                'province' => $request->province,
+                'regency' => $request->regency,
+                'subdistrict' => $request->subdistrict,
+                'village' => $request->village,
+                'type' => $request->type,
+                'description' => $request->description,
+                'image' => $imagePath,
+            ]);
+    
+            return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupload file atau menyimpan data.');
+        }
     }
+    
 
     /**
      * Display the specified resource.
