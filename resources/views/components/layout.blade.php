@@ -22,7 +22,7 @@
 
     <x-sidebar class="w-3/12"></x-sidebar>  
 
-    <main class="p-12 w-screen bg-blue-50 overflow-y-auto">
+    <main class="p-12 w-screen h-screen bg-gray-50 overflow-y-auto">
         {{ $slot }}
     </main>
 

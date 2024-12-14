@@ -17,6 +17,7 @@ class Report extends Model
         'village',
         'type',
         'description',
+        'title',
         'image',    
     ];
 
@@ -26,11 +27,11 @@ class Report extends Model
     }
 
     public function comments(): HasMany
-    {
+    {   
         return $this->hasMany(Comment::class);
     }
 
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

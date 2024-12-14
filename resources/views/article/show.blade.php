@@ -92,33 +92,4 @@
         </div>
     @endif
 
-    @push('script')
-        <script>
-            $(document).ready(function() {
-                $.ajax({
-                    // HTTP method
-                    method: "GET",
-                    // ENDPOINT
-                    url: "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
-                    // Tipe Data
-                    dataType: "json",
-                    success: function(response) {
-                        let options = "";
-                        response.forEach(option => {
-                            options +=
-                                `<option value="${option.id}" name="province">${option.name}</option>`;
-                        });
-                        $('#province').append(options);
-                    },
-                    error: function(error) {
-                        console.log(`Error: ${error}`);
-                    }
-                });
-            });
-
-            function voting() {
-                const buttonVoting = document.getElementById('')
-            }
-        </script>
-    @endpush
 </x-layout>

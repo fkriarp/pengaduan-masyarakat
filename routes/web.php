@@ -17,12 +17,11 @@ Route::middleware(['IsNotLogin'])->group(function () {
 });
 
 Route::middleware(['IsLogin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [ReportController::class, 'dashboard'])->name('dashboard');
 
     Route::prefix('/article')->name('article.')->group(function () {
         Route::get('/', [ReportController::class, 'article'])->name('index');
+        Route::get('/{id}', [ReportController::class, 'show'])->name('show');
     });
 
     Route::prefix('/report')->name('report.')->group(function () {

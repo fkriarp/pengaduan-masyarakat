@@ -137,6 +137,18 @@
             </select>
         </div>
 
+        {{-- Title --}}
+        <div class="space-y-1">
+            <label for="title" class="block text-sm font-medium text-gray-700">Judul Pengaduan<span
+                    class="text-red-500">*</span></label>
+            <input type="text" id="title" name="title"
+                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                placeholder="Ketikkan judul..." required>
+            @error('title')
+                <small class="text-danger-500">{{ $message }}</small>
+            @enderror
+        </div>
+
         <!-- Deskripsi -->
         <div class="space-y-1">
             <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi<span
@@ -187,7 +199,8 @@
                         success: function(response) {
                             let options = `<option value="" selected disabled>${placeholder}</option>`;
                             response.forEach(option => {
-                                options += `<option value="${option.name}">${option.name}</option>`;
+                                options +=
+                                    `<option id="${option.id}}" value="${option.id}">${option.name}</option>`;
                             });
                             $(id).html(options);
                         },

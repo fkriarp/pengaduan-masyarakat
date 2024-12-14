@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(
-                table: 'users',
-                indexName: 'reports_user_id',
+                table: 'users', indexName: 'reports_user_id'
             );
+            $table->string('title');
             $table->text('description');
             $table->enum('type', ['KEJAHATAN', 'PEMBANGUNAN', 'SOSIAL']);
             $table->string('province');

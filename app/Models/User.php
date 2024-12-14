@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class, 'user_id');
+    }
+
     public function staffProvinces(): HasOne
     {
         return $this->hasOne(StaffProvince::class);

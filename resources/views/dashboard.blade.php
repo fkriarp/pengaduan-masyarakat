@@ -45,14 +45,16 @@
             <img src="{{ asset('assets/image/toa.png') }}" class="w-3/4 mx-auto" alt="">
             <div class="mt-2 text-center">
                 <p class="font-semibold text-gray-400">Buat Laporan</p>
-                <p class="w-3/4 mx-auto text-gray-700">Laporkan keluhan atau aspirasi anda dengan lengkap dan jelas</p>
+                <p class="w-3/4 mx-auto text-gray-700">Laporkan keluhan atau aspirasi anda dengan lengkap dan jelas
+                </p>
             </div>
         </div>
         <div class="p-8 w-80 h-96 bg-white rounded-md flex flex-col justify-between">
             <img src="{{ asset('assets/image/verify.png') }}" class="w-3/4 mx-auto" alt="">
             <div class="mt-2 text-center">
                 <p class="font-semibold text-gray-400">Proses Verifikasi</p>
-                <p class="w-3/4 mx-auto text-gray-700">Laporan anda akan diverifikasi & diteruskan kepada petugas</p>
+                <p class="w-3/4 mx-auto text-gray-700">Laporan anda akan diverifikasi & diteruskan kepada petugas
+                </p>
             </div>
         </div>
         <div class="p-8 w-80 h-96 bg-white rounded-md flex flex-col justify-between">
@@ -66,18 +68,18 @@
             <img src="{{ asset('assets/image/solution.png') }}" class="w-3/4 mx-auto" alt="">
             <div class="mt-2 text-center">
                 <p class="font-semibold text-gray-400">Selesai</p>
-                <p class="w-3/4 mx-auto text-gray-700">Laporan anda akan terus ditindaklanjuti sampai terselesaikan</p>
+                <p class="w-3/4 mx-auto text-gray-700">Laporan anda akan terus ditindaklanjuti sampai terselesaikan
+                </p>
             </div>
         </div>
 
-
         <div class="h-52 bg-white col-span-2 flex flex-col justify-center items-center">
             <span class="font-semibold text-gray-500">Aduanku</span>
-            <span class="font-semibold text-gray-400">4</span>
+            <span class="font-semibold text-gray-400">{{ $report }}</span>
         </div>
         <div class="h-52 bg-white col-span-2 flex flex-col justify-center items-center">
             <span class="font-semibold text-gray-500">Seluruh aduan masyarakat</span>
-            <span class="font-semibold text-gray-400">271</span>
+            <span class="font-semibold text-gray-400">{{ $reports }}</span>
         </div>
     </div>
 

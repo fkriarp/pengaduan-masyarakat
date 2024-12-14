@@ -31,58 +31,56 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        // Cek apakah user sudah login
+        if (!Auth::check()) {
+            return redirect()->back()->with('error', 'Anda harus login terlebih dahulu.');
+        }
 
-        // Memvalidasi inputan dari form
+        // Validasi input
         $request->validate([
-            'province' => 'required',
-            'regency' => 'required',
-            'subdistrict' => 'required',
-            'village' => 'required',
-            'type' => 'required',
+            'province' => 'required|string|max:255',
+            'regency' => 'required|string|max:255',
+            'subdistrict' => 'required|string|max:255',
+            'village' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'required|min:128',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2028',
         ]);
 
-        // Memeriksa apakah file image ada dan valid
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Membuat nama file baru yang unik
+        try {
+            // Simpan gambar
             $fileName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $imagePath = $request->file('image')->store('images/' . date('Y/m/d'), 'public');
 
-            // Menyimpan gambar ke folder storage/public/images
-            $imagePath = $request->file('image')->storeAs('images', $fileName, 'public');
+            // Simpan data ke database
+            Report::create([
+                'user_id' => Auth::user()->id,
+                'province' => $request->province,
+                'regency' => $request->regency,
+                'subdistrict' => $request->subdistrict,
+                'village' => $request->village,
+                'type' => $request->type,
+                'title' => $request->title,
+                'description' => $request->description,
+                'image' => $imagePath,
+            ]);
 
-        } else {
-            // Menangani kasus jika file tidak valid
-            return redirect()->back()->with('error', 'Gambar yang diupload tidak valid.');
-        }
-
-        // Menyimpan laporan ke database
-        $data =  [
-            'user_id' => Auth::user()->id,
-            'province' => $request->province,
-            'regency' => $request->regency,
-            'subdistrict' => $request->subdistrict,
-            'village' => $request->village,
-            'type' => $request->type,
-            'description' => $request->description,
-            'image' => $imagePath,
-        ];
-
-        if ($data && Auth::check()) {
-            Report::create($data);
             return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
-        } else {
-            // Menangani kesalahan yang mungkin terjadi selama proses penyimpanan
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupload file atau menyimpan data');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Report $report)
+    public function show(Report $report, $id)
     {
-        //
+        $report = Report::where('id', $id)->first();
+
+        return view('article.show', compact('report'));
     }
 
     /**
@@ -109,7 +107,21 @@ class ReportController extends Controller
         //
     }
 
-    public function article() {
-        return view('article.index');
+    public function article(Request $request)
+    {
+        $reports = Report::when($request->filled('province'), function ($query) use ($request) {
+            $query->where('province', $request->province);
+        })->get();
+    
+        return view('article.index', compact('reports'));
+    }
+    
+
+    public function dashboard()
+    {
+        $report = Report::where('user_id', Auth::user()->id)->count();
+        $reports = Report::all()->count();
+
+        return view('dashboard', compact('report', 'reports'));
     }
 }
