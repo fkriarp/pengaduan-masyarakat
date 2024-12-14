@@ -7,8 +7,9 @@
   </div>
   <nav class="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
     <x-nav-link href="{{ route('dashboard') }}" :active="request()->is('dashboard')"><i class="ph ph-hash"></i>Dashboard</x-nav-link>
-    <x-nav-link href="{{ route('report.show') }}" :active="request()->is('report/show')"><i class="ph ph-globe"></i>Artikel Pengaduan</x-nav-link>
-    <x-nav-link href="{{ route('report.create') }}" :active="request()->is('report/create')"><i class="ph ph-files"></i>Buat Pengaduan</x-nav-link>
+    <x-nav-link href="{{ route('article.index') }}" :active="request()->is('article')"><i class="ph ph-globe"></i>Artikel</x-nav-link>
+    <x-nav-link href="{{ route('report.index') }}" :active="request()->is('report')"><i class="ph ph-files"></i>Pengaduan</x-nav-link>
+    <x-nav-link href="{{ route('report.create') }}" :active="request()->is('report/create')"><i class="ph ph-note-pencil"></i>Buat Pengaduan</x-nav-link>
     <x-nav-link href="{{ route('logout') }}"><i class="ph ph-sign-out"></i>Sign out</x-nav-link>
   </nav>
 </div>

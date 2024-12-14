@@ -19,9 +19,9 @@
             <div class="w-4/5 mx-auto">
                 <h1 class="font-bold text-7xl tracking-wide">Pengaduan Masyarakat</h1>
                 <p class="my-12 text-lg leading-relaxed">
-                    Selamat datang di <span class="font-bold">SUARA<span class="text-blue-500">KITA</span></span>! Kami adalah platform pengaduan masyarakat yang dirancang untuk memudahkan Anda menyampaikan keluhan, aspirasi, atau saran secara cepat, aman, dan transparan. Dengan semangat kebersamaan, <span class="font-bold">SUARA<span class="text-blue-500">KITA</span></span> menghubungkan masyarakat dengan pihak terkait untuk menciptakan solusi nyata. Mari bersama-sama membangun lingkungan yang lebih baik, di mana setiap suara didengar dan setiap masalah menemukan penyelesaian. Karena kami percaya, perubahan besar dimulai dari langkah kecil yang kita ambil bersama.
+                    Web Management “<span class="font-semibold tracking-wide">SUARA<span class="text-blue-500">KITA</span></span>” merupakan website yang digunakan untuk masyarakat Indonesia menyampaikan keluhannya. Nantinya, petugas daerah terkait dapat menindak lanjuti dan melakukan monitoring dari pengaduan yang disampaikan masyarakat daerahnya.
                 </p>
-                <a href="{{ route('showLogin') }}" class="py-3 px-6 mt-10 bg-blue-500 border-2 border-sky-700 rounded-md text-sky-700 font-semibold hover:bg-blue-600 text-white transition ease-in-out">
+                <a href="{{ route('login') }}" class="py-3 px-6 mt-10 bg-blue-500 border-2 border-sky-700 rounded-md text-sky-700 font-semibold hover:bg-blue-600 text-white transition ease-in-out">
                     Bergabung
                 </a>
             </div>

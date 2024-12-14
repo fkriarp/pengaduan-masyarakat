@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -12,7 +13,9 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('report.index');
+        $reports = Report::where('user_id', Auth::user()->id)->get();
+
+        return view('report.index', compact('reports'));
     }
 
     /**
@@ -28,6 +31,8 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+
+        // Memvalidasi inputan dari form
         $request->validate([
             'province' => 'required',
             'regency' => 'required',
@@ -35,33 +40,42 @@ class ReportController extends Controller
             'village' => 'required',
             'type' => 'required',
             'description' => 'required|min:128',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2028',
         ]);
-    
-        try {
-            // Generate a unique file name using UUID
+
+        // Memeriksa apakah file image ada dan valid
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Membuat nama file baru yang unik
             $fileName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-    
-            // Store the image in the 'images' folder under public storage
+
+            // Menyimpan gambar ke folder storage/public/images
             $imagePath = $request->file('image')->storeAs('images', $fileName, 'public');
-    
-            // Create a new report
-            Report::create([
-                'province' => $request->province,
-                'regency' => $request->regency,
-                'subdistrict' => $request->subdistrict,
-                'village' => $request->village,
-                'type' => $request->type,
-                'description' => $request->description,
-                'image' => $imagePath,
-            ]);
-    
+
+        } else {
+            // Menangani kasus jika file tidak valid
+            return redirect()->back()->with('error', 'Gambar yang diupload tidak valid.');
+        }
+
+        // Menyimpan laporan ke database
+        $data =  [
+            'user_id' => Auth::user()->id,
+            'province' => $request->province,
+            'regency' => $request->regency,
+            'subdistrict' => $request->subdistrict,
+            'village' => $request->village,
+            'type' => $request->type,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ];
+
+        if ($data && Auth::check()) {
+            Report::create($data);
             return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupload file atau menyimpan data.');
+        } else {
+            // Menangani kesalahan yang mungkin terjadi selama proses penyimpanan
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengupload file atau menyimpan data');
         }
     }
-    
 
     /**
      * Display the specified resource.
@@ -93,5 +107,9 @@ class ReportController extends Controller
     public function destroy(Report $report)
     {
         //
+    }
+
+    public function article() {
+        return view('article.index');
     }
 }

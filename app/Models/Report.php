@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Report extends Model
 {
     protected $fillable = [
+        'user_id',
         'province',
         'regency',
         'subdistrict',

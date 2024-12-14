@@ -18,16 +18,15 @@
 </head>
 <body class="font-Poppins w-screen">
 
-  <div class="flex justify-between">
+  <div class="h-screen flex justify-between">
 
     <x-sidebar class="w-3/12"></x-sidebar>  
 
-    <main class="p-12 w-screen bg-blue-50">
+    <main class="p-12 w-screen bg-blue-50 overflow-y-auto">
         {{ $slot }}
     </main>
 
   </div>
-
 
   @stack('script')
   <script src="../path/to/flowbite/dist/flowbite.min.js"></script>

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->json('voting')->default('[]');
             $table->integer('viewers')->default(0);
             $table->string('image');
-            $table->boolean('statement');
+            $table->boolean('statement')->default(true);
             $table->timestamps();
         });
     }

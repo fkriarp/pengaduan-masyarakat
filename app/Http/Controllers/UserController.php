@@ -16,10 +16,17 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        User::create([
+        // Membuat user baru
+        $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
+
+        // Login user secara otomatis setelah registrasi
+        Auth::login($user); 
+
+        // Regenerate session
+        $request->session()->regenerate();
 
         return redirect()->route('dashboard')->with('success', 'Selamat datang!');        
 
@@ -45,6 +52,6 @@ class UserController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('showLogin');
+        return redirect()->route('login');
     }
 }
