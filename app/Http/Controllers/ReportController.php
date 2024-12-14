@@ -49,27 +49,48 @@ class ReportController extends Controller
         ]);
 
         try {
+            // Validasi data
+            $validatedData = $request->validate([
+                'province' => 'required|string|max:255',
+                'regency' => 'required|string|max:255',
+                'subdistrict' => 'required|string|max:255',
+                'village' => 'required|string|max:255',
+                'type' => 'required|string|max:50',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // maksimal 2MB
+            ]);
+        
             // Simpan gambar
-            $fileName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
             $imagePath = $request->file('image')->store('images/' . date('Y/m/d'), 'public');
 
+            function getName($name) {
+                $result = explode("-", $name);
+                return $result[1];
+            }
+        
             // Simpan data ke database
             Report::create([
-                'user_id' => Auth::user()->id,
-                'province' => $request->province,
-                'regency' => $request->regency,
-                'subdistrict' => $request->subdistrict,
-                'village' => $request->village,
-                'type' => $request->type,
-                'title' => $request->title,
-                'description' => $request->description,
+                'user_id' => Auth::id(),
+                'province' => getName($validatedData['province']),
+                'regency' => getName($validatedData['regency']),
+                'subdistrict' => getName($validatedData['subdistrict']),
+                'village' => getName($validatedData['village']),
+                'type' => $validatedData['type'],
+                'title' => $validatedData['title'],
+                'description' => $validatedData['description'],
                 'image' => $imagePath,
             ]);
-
+        
             return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            // Log error untuk debugging
+            \Log::error('Error saat membuat pengaduan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan, silakan coba lagi.');
         }
+        
     }
 
 

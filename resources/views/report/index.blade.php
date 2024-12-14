@@ -68,8 +68,10 @@
                                             <path d="M5 12l5 5L19 7"></path>
                                         </svg>
                                     </div>
-                                    <p class="text-lg font-semibold text-green-600">
-                                        response_status</p>
+                                    <div class="w-full flex justify-between">
+                                        <p class="text-lg font-semibold text-green-600">response_status</p>
+                                        <a href="#" class="px-4 py-2 text-red-500 bg-red-200 rounded-md font-semibold hover:bg-red-300  ">Batalkan Pengaduan</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

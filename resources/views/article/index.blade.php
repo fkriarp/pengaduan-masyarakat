@@ -28,7 +28,7 @@
                 <div
                     class="relative flex flex-col md:flex-row w-full my-6 bg-white shadow-sm border border-slate-200 rounded-lg ">
                     <div class="relative p-2.5 md:w-2/5 shrink-0 overflow-hidden">
-                        <img src="{{ asset('storage/' . $report->image) }}" alt="card-image"
+                        <img src="{{ asset('storage/' . $report->image) }}" alt="Bukti Gambar"
                             class="h-full w-full rounded-md md:rounded-lg object-cover" />
                     </div>
                     <div class="p-6 flex flex-col justify-between">
@@ -40,28 +40,39 @@
                                 {{ $report->type }}
                             </div>
 
-                            <div class="relative flex items-center gap-2">
-                                <!-- Checkbox Heart -->
-                                <label class="relative block cursor-pointer select-none">
-                                    <input type="checkbox" id="voting" class="absolute opacity-0 h-0 w-0 peer" />
-                                    <svg id="Layer_1" version="1.0" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="relative h-[25px] w-[25px] fill-gray-500 transition-transform duration-300 peer-hover:scale-110 peer-checked:fill-[#E3474F]">
-                                        <path
-                                            d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
-                                        </path>
-                                    </svg>
-                                </label>
-                                <!-- Like Count -->
-                                <span id="likeCount"
-                                    class="text-sm font-semibold text-gray-700 transition-transform duration-300">
-                                    100
-                                </span>
+                        
+                            <div class="absolute right-4 flex flex-col gap-4">
+                                <div class="relative flex items-center gap-2">
+                                    <!-- Checkbox Heart -->
+                                    <label class="relative block cursor-pointer select-none">
+                                        <input type="checkbox" id="voting" class="absolute opacity-0 h-0 w-0 peer" />
+                                        <svg id="Layer_1" version="1.0" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="relative h-[25px] w-[25px] fill-gray-500 transition-transform duration-300 peer-hover:scale-110 peer-checked:fill-[#E3474F]">
+                                            <path
+                                                d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z">
+                                            </path>
+                                        </svg>
+                                    </label>
+                                    <!-- Like Count -->
+                                    <span id="likeCount"
+                                        class="text-sm font-semibold text-gray-700 transition-transform duration-300">
+                                        100
+                                    </span>
+                                </div>
+                                <div class="mb-3 flex items-center gap-2">
+                                    <img src="{{ asset('assets/image/eye-svgrepo-com.svg') }}" alt="" width="25"
+                                        height="25">
+                                    <span id="viewCount"
+                                        class="text-sm font-semibold text-gray-700 transition-transform duration-300">
+                                        100
+                                    </span>
+                                </div>
                             </div>
 
                         </div>
 
-                        <a href="" class="hover:underline">
+                        <a href="{{ route('article.show', $report->id) }}" class="hover:underline">
                             <h4 class="my-2 text-slate-800 text-xl font-semibold uppercase">
                                 {{ Str::limit($report->title, 43) }}
                             </h4>
@@ -69,17 +80,10 @@
                         <p class="mb-3 text-slate-600 leading-normal font-light">
                             {{ Str::limit($report->description, 244) }}
                         </p>
-                        <div class="mb-3 flex items-center gap-2">
-                            <img src="{{ asset('assets/image/eye-svgrepo-com.svg') }}" alt="" width="25"
-                                height="25">
-                            <span id="viewCount"
-                                class="text-sm font-semibold text-gray-700 transition-transform duration-300">
-                                100
-                            </span>
-                        </div>
+                        <div class="font-semibold text-gray-500 tracking-wide">Lokasi : {{ $report->village }}\{{ $report->subdistrict }}\{{ $report->regency }}\{{ $report->province }}</div>
                         <span class="font-semibold text-gray-400">By {{ $report->user->email }}</span>
                         <div class="mt-3 flex justify-between items-end">
-                            <a href="#"
+                            <a href="{{ route('article.show', $report->id) }}"
                                 class="text-slate-800 font-semibold text-sm hover:underline flex items-center">
                                 Read More &raquo;
                             </a>

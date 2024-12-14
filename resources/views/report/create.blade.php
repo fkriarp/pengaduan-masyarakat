@@ -200,7 +200,7 @@
                             let options = `<option value="" selected disabled>${placeholder}</option>`;
                             response.forEach(option => {
                                 options +=
-                                    `<option id="${option.id}}" value="${option.id}">${option.name}</option>`;
+                                    `<option id="${option.id}}" value="${option.id}-${option.name}">${option.name}</option>`;
                             });
                             $(id).html(options);
                         },
@@ -214,28 +214,32 @@
                     "Pilih Provinsi");
 
                 $('#province').on('change', function() {
-                    let provinceId = $(this).val();
-                    if (provinceId) {
+                    let province = $(this).val();
+                    let id = province.slice(0, 2);
+                    console.log(id);
+                    if (id) {
                         populateSelect('#regency',
-                            `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
+                            `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`,
                             "Pilih Kota/Kabupaten");
                     }
                 });
 
                 $('#regency').on('change', function() {
-                    let regencyId = $(this).val();
-                    if (regencyId) {
+                    let regency = $(this).val();
+                    let id = regency.slice(0, 4);
+                    if (id) {
                         populateSelect('#subdistrict',
-                            `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`,
+                            `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`,
                             "Pilih Kecamatan");
                     }
                 });
 
                 $('#subdistrict').on('change', function() {
-                    let subdistrictId = $(this).val();
-                    if (subdistrictId) {
+                    let subdistrict = $(this).val();
+                    let id = subdistrict.slice(0, 7);
+                    if (id) {
                         populateSelect('#village',
-                            `https://www.emsifa.com/api-wilayah-indonesia/api/villages/${subdistrictId}.json`,
+                            `https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`,
                             "Pilih Kelurahan");
                     }
                 });
