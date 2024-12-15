@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-    public function users(): BelongsTo
+    protected $fillable = [
+        'user_id',
+        'comment',
+        'report_id',
+    ];
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function reports(): BelongsTo
+    public function report(): BelongsTo
     {
         return $this->belongsTo(Report::class);
     }

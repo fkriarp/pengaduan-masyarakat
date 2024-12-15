@@ -19,7 +19,7 @@
     @if ($reports->isEmpty())
         <div class="w-full h-full flex flex-col justify-center items-center">
             <img src="{{ asset('assets/image/empty-box.png') }}" alt="">
-            <h1 class="text-2xl uppercase font-semibold tracking-wide">tidak ada data artikel</h1>
+            <h1 class="text-2xl uppercase font-semibold tracking-wide">tidak ada artikel</h1>
         </div>
     @else
         <div class="flex flex-col gap-4">
@@ -78,14 +78,14 @@
                             </h4>
                         </a>
                         <p class="mb-3 text-slate-600 leading-normal font-light">
-                            {{ Str::limit($report->description, 244) }}
+                            {{ Str::limit($report->description, 183) }}
                         </p>
                         <div class="font-semibold text-gray-500 tracking-wide">Lokasi : {{ $report->village }}\{{ $report->subdistrict }}\{{ $report->regency }}\{{ $report->province }}</div>
                         <span class="font-semibold text-gray-400">By {{ $report->user->email }}</span>
                         <div class="mt-3 flex justify-between items-end">
                             <a href="{{ route('article.show', $report->id) }}"
                                 class="text-slate-800 font-semibold text-sm hover:underline flex items-center">
-                                Read More &raquo;
+                                Baca Selengkapnya &raquo;
                             </a>
                             <span>{{ $report->created_at->diffForHumans() }}</span>
                         </div>

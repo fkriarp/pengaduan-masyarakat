@@ -21,7 +21,7 @@ class Report extends Model
         'image',    
     ];
 
-    public function responses(): HasOne
+    public function response(): HasOne
     {
         return $this->hasOne(Response::class);
     }

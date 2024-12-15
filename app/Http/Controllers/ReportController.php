@@ -31,67 +31,44 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        // Cek apakah user sudah login
-        if (!Auth::check()) {
-            return redirect()->back()->with('error', 'Anda harus login terlebih dahulu.');
-        }
-
         // Validasi input
         $request->validate([
             'province' => 'required|string|max:255',
             'regency' => 'required|string|max:255',
             'subdistrict' => 'required|string|max:255',
             'village' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'required|string|max:50',
             'title' => 'required|string|max:255',
             'description' => 'required|min:128',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2028',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        try {
-            // Validasi data
-            $validatedData = $request->validate([
-                'province' => 'required|string|max:255',
-                'regency' => 'required|string|max:255',
-                'subdistrict' => 'required|string|max:255',
-                'village' => 'required|string|max:255',
-                'type' => 'required|string|max:50',
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // maksimal 2MB
-            ]);
-        
-            // Simpan gambar
-            $imagePath = $request->file('image')->store('images/' . date('Y/m/d'), 'public');
+        // Simpan gambar
+        $imagePath = $request->file('image')->store('images/' . date('Y/m/d'), 'public');
 
-            function getName($name) {
-                $result = explode("-", $name);
-                return $result[1];
-            }
-        
-            // Simpan data ke database
-            Report::create([
-                'user_id' => Auth::id(),
-                'province' => getName($validatedData['province']),
-                'regency' => getName($validatedData['regency']),
-                'subdistrict' => getName($validatedData['subdistrict']),
-                'village' => getName($validatedData['village']),
-                'type' => $validatedData['type'],
-                'title' => $validatedData['title'],
-                'description' => $validatedData['description'],
-                'image' => $imagePath,
-            ]);
-        
-            return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->withInput();
-        } catch (\Exception $e) {
-            // Log error untuk debugging
-            \Log::error('Error saat membuat pengaduan: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan, silakan coba lagi.');
+        // Fungsi untuk mendapatkan nama dari string
+        function getName($name)
+        {
+            $result = explode("-", $name);
+            return $result[1];
         }
-        
+
+        // Simpan data ke database
+        Report::create([
+            'user_id' => Auth::id(),
+            'province' => getName($request->province),
+            'regency' => getName($request->regency),
+            'subdistrict' => getName($request->subdistrict),
+            'village' => getName($request->village),
+            'type' => $request->type,
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
     }
+
 
 
     /**
@@ -123,20 +100,29 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Report $report)
+    public function destroy($id)
     {
-        //
+        $report = Report::find($id);
+
+        if (!$report) {
+            return redirect()->back()->with('error', 'Pengaduan tidak ditemukan!');
+        }
+
+        $report->delete();
+
+        return redirect()->back()->with('deleted', 'Pengaduan berhasil dibatalkan!');
     }
+
 
     public function article(Request $request)
     {
         $reports = Report::when($request->filled('province'), function ($query) use ($request) {
             $query->where('province', $request->province);
         })->get();
-    
+
         return view('article.index', compact('reports'));
     }
-    
+
 
     public function dashboard()
     {

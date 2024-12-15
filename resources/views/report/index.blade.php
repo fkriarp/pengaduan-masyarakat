@@ -1,5 +1,42 @@
 <x-layout>
 
+    @if (session('deleted'))
+        <div id="dismiss-alert"
+            class="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 bg-yellow-50 border border-yellow-200 text-sm text-yellow-800 rounded-lg p-4 mb-8"
+            role="alert" tabindex="-1" aria-labelledby="hs-dismiss-button-label">
+            <div class="flex">
+                <div class="shrink-0">
+                    <svg class="shrink-0 size-4 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                        <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                </div>
+                <div class="ms-2">
+                    <h3 id="hs-dismiss-button-label" class="text-sm font-medium">
+                        {{ session('deleted') }}
+                    </h3>
+                </div>
+                <div class="ps-3 ms-auto">
+                    <div class="-mx-1.5 -my-1.5">
+                        <button type="button"
+                            class="inline-flex bg-yellow-50 rounded-lg p-1.5 text-yellow-500 hover:bg-yellow-100 focus:outline-none focus:bg-yellow-100"
+                            data-hs-remove-element="#dismiss-alert">
+                            <span class="sr-only">Dismiss</span>
+                            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 6 6 18"></path>
+                                <path d="m6 6 12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
 
     @if ($reports->isEmpty())
         <div class="w-full h-full flex flex-col justify-center items-center">
@@ -22,7 +59,7 @@
                         <svg class="hs-accordion-active:hidden block size-3.5 transition-transform duration-300"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round"> 
+                            stroke-linejoin="round">
                             <path d="M5 12h14"></path>
                             <path d="M12 5v14"></path>
                         </svg>
@@ -68,9 +105,14 @@
                                             <path d="M5 12l5 5L19 7"></path>
                                         </svg>
                                     </div>
-                                    <div class="w-full flex justify-between">
+                                    <div class="w-full flex justify-between items-center">
                                         <p class="text-lg font-semibold text-green-600">response_status</p>
-                                        <a href="#" class="px-4 py-2 text-red-500 bg-red-200 rounded-md font-semibold hover:bg-red-300  ">Batalkan Pengaduan</a>
+                                        <button type="button"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700"
+                                            onclick="showModalDelete('{{ $report->id }}', '{{ $report->title }}')">
+                                            Batalkan Pengaduan
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -235,6 +277,40 @@
         </div>
     @endif
 
+    {{-- modals --}}
+    <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
+            <form action="" method="POST" class="flex flex-col">
+                @csrf
+                @method('DELETE')
+                <div class="flex items-center justify-between px-6 py-4 border-b">
+                    <h1 class="text-lg font-semibold">Hapus Data Pengguna</h1>
+                    <button type="button" class="text-gray-400 hover:text-gray-500"
+                        onclick="closeModal('deleteModal')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="px-6 py-4">
+                    <p>Apakah anda yakin ingin membatalkan pengaduan <b id="name_user"></b>?</p>
+                </div>
+                <div class="flex items-center justify-end gap-2 px-6 py-4 border-t">
+                    <button type="button"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
+                        onclick="closeModal('deleteModal')">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700">
+                        Ya, saya yakin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 
@@ -260,6 +336,24 @@
                     }
                 });
             });
+
+            function showModalDelete(id, name) {
+                // Set nama pengguna di dalam modal
+                document.getElementById('name_user').textContent = name;
+
+                // Tampilkan modal
+                const modal = document.getElementById('deleteModal');
+                modal.classList.remove('hidden');
+
+                // Atur URL action form
+                let url = "{{ route('report.delete', ':id') }}";
+                url = url.replace(':id', id);
+                modal.querySelector('form').setAttribute('action', url);
+            }
+
+            function closeModal(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
         </script>
     @endpush
 </x-layout>
