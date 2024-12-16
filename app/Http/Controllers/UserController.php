@@ -42,7 +42,8 @@ class UserController extends Controller
         $credential = $request->only('email', 'password');
 
         if (Auth::attempt($credential)) {
-            return redirect()->route('dashboard')->with('success', 'Selamat datang kembali!');
+            if (Auth::user()->role == "GUEST")
+                return redirect()->route('dashboard')->with('success', 'Selamat datang kembali!');
         } else {
             return redirect()->back()->with('failed', 'Periksa kembali email dan password. Lalu, coba lagi');
         }

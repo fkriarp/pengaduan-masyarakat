@@ -78,7 +78,7 @@ class ReportController extends Controller
     {
         $report = Report::where('id', $id)->first();
 
-        return view('article.show', compact('report'));
+        return view('report.show', compact('report'));
     }
 
     /**
@@ -120,7 +120,7 @@ class ReportController extends Controller
             $query->where('province', $request->province);
         })->get();
 
-        return view('article.index', compact('reports'));
+        return view('report.article', compact('reports'));
     }
 
 

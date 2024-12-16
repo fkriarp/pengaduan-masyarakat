@@ -16,19 +16,21 @@ Route::middleware(['IsNotLogin'])->group(function () {
     Route::post('/login/auth', [UserController::class, 'login'])->name('login.auth');
 });
 
-Route::middleware(['IsLogin'])->group(function () {
+Route::get('/error-permission', function () {
+    return view('errors.permission');
+})->name('error.permission');
+
+Route::middleware(['IsLogin', 'IsGuest'])->group(function () {
+
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ReportController::class, 'dashboard'])->name('dashboard');
-
-    Route::prefix('/article')->name('article.')->group(function () {
-        Route::get('/', [ReportController::class, 'article'])->name('index');
-        Route::get('/{id}', [ReportController::class, 'show'])->name('show');
-    });
-
+ 
     Route::prefix('/report')->name('report.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
         Route::get('/create', [ReportController::class, 'create'])->name('create');
         Route::post('/store', [ReportController::class, 'store'])->name('store');
+        Route::get('/article', [ReportController::class, 'article'])->name('article');
+        Route::get('/{id}', [ReportController::class, 'show'])->name('show');
         Route::delete('/destroy/{id}', [ReportController::class, 'destroy'])->name('delete');
     });
 

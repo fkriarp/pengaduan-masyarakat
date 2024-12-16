@@ -207,6 +207,7 @@
                         error: function(error) {
                             console.log(`Error: ${error}`);
                         }
+
                     });
                 }
 
@@ -216,7 +217,6 @@
                 $('#province').on('change', function() {
                     let province = $(this).val();
                     let id = province.slice(0, 2);
-                    console.log(id);
                     if (id) {
                         populateSelect('#regency',
                             `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`,

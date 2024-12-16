@@ -13,7 +13,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
+        $comments = Comment::with('user')->latest()->get();
 
         return view('article.show', compact('comments'));
     }
@@ -33,7 +33,7 @@ class CommentController extends Controller
     {
         $request->validate([
             'reportId' => 'required',
-            'comment' => 'required',
+            'comment' => 'required|string|max:255',
         ]);
 
         Comment::create([

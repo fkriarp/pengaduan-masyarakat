@@ -1,6 +1,6 @@
 <x-layout>
 
-    <form action="{{ route('article.index') }}" method="get" class="flex">
+    <form action="{{ route('report.article') }}" method="get" class="flex">
         @csrf
         <select id="province" name="province"
             class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
@@ -72,7 +72,7 @@
 
                         </div>
 
-                        <a href="{{ route('article.show', $report->id) }}" class="hover:underline">
+                        <a href="{{ route('report.show', $report->id) }}" class="hover:underline">
                             <h4 class="my-2 text-slate-800 text-xl font-semibold uppercase">
                                 {{ Str::limit($report->title, 43) }}
                             </h4>
@@ -83,7 +83,7 @@
                         <div class="font-semibold text-gray-500 tracking-wide">Lokasi : {{ $report->village }}\{{ $report->subdistrict }}\{{ $report->regency }}\{{ $report->province }}</div>
                         <span class="font-semibold text-gray-400">By {{ $report->user->email }}</span>
                         <div class="mt-3 flex justify-between items-end">
-                            <a href="{{ route('article.show', $report->id) }}"
+                            <a href="{{ route('report.show', $report->id) }}"
                                 class="text-slate-800 font-semibold text-sm hover:underline flex items-center">
                                 Baca Selengkapnya &raquo;
                             </a>
@@ -110,7 +110,7 @@
                         let options = "";
                         response.forEach(option => {
                             options +=
-                                `<option value="${option.id}" name="province">${option.name}</option>`;
+                                `<option value="${option.name}" name="province">${option.name}</option>`;
                         });
                         $('#province').append(options);
                     },
@@ -119,10 +119,6 @@
                     }
                 });
             });
-
-            function voting() {
-                const buttonVoting = document.getElementById('')
-            }
         </script>
     @endpush
 </x-layout>
