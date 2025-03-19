@@ -22,4 +22,8 @@ class Response extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public const ON_PROCESS = 'ON_PROCESS';
+    public const DONE = 'DONE';
+    public const REJECT = 'REJECT';
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,10 +52,10 @@ class ReportController extends Controller
         {
             $result = explode("-", $name);
             return $result[1];
-        }
+        }  
 
         // Simpan data ke database
-        Report::create([
+        $report = Report::create([
             'user_id' => Auth::id(),
             'province' => getName($request->province),
             'regency' => getName($request->regency),
@@ -65,6 +66,7 @@ class ReportController extends Controller
             'description' => $request->description,
             'image' => $imagePath,
         ]);
+
 
         return redirect()->back()->with('success', 'Berhasil membuat pengaduan!');
     }
